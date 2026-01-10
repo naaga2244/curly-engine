@@ -1,0 +1,41 @@
+name: Build and Push to ACR
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: welcomeapp-bahvgnfdcnfuf4gc.azurecr.io
+  API_IMAGE: welcomeapp-api
+  WEB_IMAGE: welcomeapp-web
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.REGISTRY }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push API
+        uses: docker/build-push-action@v5
+        with:
+          context: ./WelcomeApp/WelcomeApp
+          file: ./WelcomeApp/WelcomeApp/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.API_IMAGE }}:${{ github.sha }}
+
+      - name: Build and push Web
+        uses: docker/build-push-action@v5
+        with:
+          context: ./welcome-app
+          file: ./welcome-app/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.WEB_IMAGE }}:${{ github.sha }}
+          build-args: |
+            REACT_APP_API_URL=http://localhost:7244

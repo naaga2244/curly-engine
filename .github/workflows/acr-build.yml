@@ -28,7 +28,7 @@ jobs:
           context: ./WelcomeApp/WelcomeApp
           file: ./WelcomeApp/WelcomeApp/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.API_IMAGE }}:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ env.API_IMAGE }}:${{ github.sha }}:latest
 
       - name: Build and push Web
         uses: docker/build-push-action@v5
@@ -36,6 +36,6 @@ jobs:
           context: ./welcome-app
           file: ./welcome-app/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.WEB_IMAGE }}:${{ github.sha }}
+          tags: ${{ env.REGISTRY }}/${{ env.WEB_IMAGE }}:${{ github.sha }}:latest
           build-args: |
             REACT_APP_API_URL=https://vanakkamapi-g4fcg6dzdaejhngh.centralindia-01.azurewebsites.net/

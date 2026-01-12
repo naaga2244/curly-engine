@@ -41,7 +41,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <p>new line 1</p>
+        <p>new line 1 | Fist line 1</p>
         <a
           className="App-link"
           href="https://reactjs.org"
